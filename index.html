@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Deadline Optimizer | Smart Planning for Students</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+            <h1 class="logo" onclick="navigateTo('landing')">
+                <i class="fas fa-bolt"></i> AI Deadline Optimizer
+            </h1>
+            <ul class="nav-links">
+                <li><a href="#" onclick="navigateTo('landing')">Home</a></li>
+                <li><a href="#" onclick="navigateTo('about')">About</a></li>
+                <li><a href="#" onclick="navigateTo('profile')">Profile</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section id="landing-section" class="section active">
+            <div class="hero">
+                <div class="container">
+                    <h1>Stop the <span class="text-accent">Deadline Panic</span></h1>
+                    <p>Our AI analyzes task complexity and your productive hours to build a realistic, day-by-day roadmap to success.</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary btn-large" onclick="navigateTo('task')">
+                            Start Planning <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="container features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-brain"></i>
+                    <h3>Smart Analysis</h3>
+                    <p>Uses Llama 3.1 to understand your project's unique requirements and complexity.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>Realistic Buffer</h3>
+                    <p>Adds 10-40% "panic buffer" so you finish on time even when things go wrong.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h3>Actionable Plan</h3>
+                    <p>Get a specific breakdown for every day leading up to your deadline.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="about-section" class="section">
+            <div class="container container-narrow">
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-info-circle"></i> About the Project</h2>
+                    <p>AI Deadline Optimizer is built for students who struggle with clustered deadlines and stress. By integrating your productive peak hours with advanced AI complexity analysis, we move beyond basic calendars into true project management.</p>
+                    
+                    <div class="tech-stack">
+                        <h4>Technical Power:</h4>
+                        <div class="tech-tags">
+                            <span>Flask Backend</span>
+                            <span>Groq/Llama 3.1 AI</span>
+                            <span>NLP Keyword Detection</span>
+                            <span>Production JS</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary" onclick="navigateTo('landing')">Back to Home</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="profile-section" class="section">
+            <div class="container container-narrow">
+                <div class="card text-center">
+                    <div class="wip-icon">🚧</div>
+                    <h2>User Profile</h2>
+                    <div class="wip-badge">Work in Progress</div>
+                    <p>The Profile system is coming soon! You will be able to save your plans, track your progress, and see productivity trends.</p>
+                    <button class="btn btn-primary" onclick="navigateTo('landing')">Back to Home</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="task-section" class="section">
+            <div class="container">
+                <div class="input-layout">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title"><i class="fas fa-edit"></i> Configure Your Plan</h2>
+                            <button class="btn btn-sm btn-outline" onclick="loadSampleData()">
+                                <i class="fas fa-vial"></i> Load Sample Data
+                            </button>
+                        </div>
+                        
+                        <form id="task-form" class="form-grid">
+                            <div class="form-group full-width">
+                                <label for="task-name">Task Name</label>
+                                <input type="text" id="task-name" placeholder="e.g., Final Year Research Paper" required>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="task-description">Task Description</label>
+                                <textarea id="task-description" rows="4" placeholder="Be detailed—the AI uses this to calculate complexity!" required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="deadline">Deadline Date</label>
+                                <input type="date" id="deadline" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="total-hours">Estimated Total Hours</label>
+                                <input type="number" id="total-hours" min="1" max="200" required>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label for="productive-hours">Your Productive Peak Hours</label>
+                                <input type="text" id="productive-hours" placeholder="e.g., 6:00 PM - 11:00 PM">
+                            </div>
+
+                            <div class="button-row">
+                                <button type="button" class="btn btn-secondary" onclick="analyzeComplexity()">
+                                    <i class="fas fa-search"></i> Analyze Complexity
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-sparkles"></i> Generate AI Plan
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div id="complexity-feedback" class="complexity-container" style="display: none;">
+                        </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="output-section" class="section">
+            <div class="container">
+                <div id="loading-state" class="loading-card" style="display: none;">
+                    <div class="spinner"></div>
+                    <h3>Crafting your strategy...</h3>
+                    <p>Our AI is breaking down tasks and calculating buffers.</p>
+                </div>
+
+                <div id="results-content" style="display: none;">
+                    <div class="results-header">
+                        <h2>Your Strategic Roadmap</h2>
+                        <button class="btn btn-success" onclick="downloadPDF()">
+                            <i class="fas fa-file-pdf"></i> Download Plan as PDF
+                        </button>
+                    </div>
+
+                    <div id="pdf-target">
+                        <div id="plan-overview" class="overview-grid">
+                            </div>
+
+                        <div id="motivation-box" class="message-box success"></div>
+                        <div id="warnings-area"></div>
+
+                        <div class="breakdown-wrapper">
+                            <h3><i class="fas fa-calendar-day"></i> Daily Action Steps</h3>
+                            <div id="daily-breakdown-container"></div>
+                        </div>
+
+                        <div class="strategies-wrapper">
+                            <h3><i class="fas fa-lightbulb"></i> Success Strategies</h3>
+                            <div id="strategies-container" class="strategies-grid"></div>
+                        </div>
+                    </div>
+                    </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 AI Deadline Optimizer | Built with ❤️ for Students</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
